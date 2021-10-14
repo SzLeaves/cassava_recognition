@@ -1,0 +1,10 @@
+paper/
+train_img/
+train_img_handle/
+.idea/
+__pycache__/
+
+*.h5
+test.py
+
+!.gitignore
