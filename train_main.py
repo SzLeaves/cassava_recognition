@@ -10,11 +10,9 @@ import time
 
 from modules import classify
 from modules import model
-from modules import model_test
 from modules import noise_handle
 
 if __name__ == "__main__":
-    """
     # -- 导入原始图片数据路径 -- #
     images_path = [str(path) for path in list(pathlib.Path("train_img").glob("*.jpg"))]
 
@@ -126,9 +124,6 @@ if __name__ == "__main__":
 
     print('done', end=' -- ')
     print(f'time: {time.time() - t:.2f}s')
-    """
-    # -- 模型训练 -- #
-    train_res = model.training()
 
-    # -- 模型测试 -- #
-    # model_test.test(train_res)
+    # -- 模型训练 -- #
+    model.training()

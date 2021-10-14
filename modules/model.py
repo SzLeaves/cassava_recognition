@@ -7,6 +7,7 @@ import json
 import os
 import pathlib
 
+import matplotlib.pyplot as plt
 import tensorflow as tf
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -64,6 +65,37 @@ def get_model(mobile_net, labels_data):
     return model
 
 
+# 绘制训练集与测试集的loss/accuary
+def plot_train_res(history):
+    acc = history.history['accuracy']
+    val_acc = history.history['val_accuracy']
+
+    loss = history.history['loss']
+    val_loss = history.history['val_loss']
+
+    plt.figure(figsize=(8, 8))
+    plt.subplot(2, 1, 1)
+
+    # 绘制准确率曲线
+    plt.title('Training and Validation Accuracy')
+    plt.plot(acc, label='Training Accuracy')
+    plt.plot(val_acc, label='Validation Accuracy')
+    plt.legend(loc='lower right')
+    plt.ylabel('Accuracy')
+
+    # 绘制损失率曲线
+    plt.title('Training and Validation Loss')
+    plt.subplot(2, 1, 2)
+    plt.plot(loss, label='Training Loss')
+    plt.plot(val_loss, label='Validation Loss')
+
+    plt.legend(loc='upper right')
+    plt.xlabel('epoch')
+    plt.ylabel('Cross Entropy')
+
+    plt.show()
+
+
 def training():
     print("--> tensorflow version " + tf.__version__)
 
@@ -99,14 +131,20 @@ def training():
 
     # 对图片和标签打包作为训练集
     train_ds = tf.data.Dataset.zip((images_ds, images_labels_ds))
+
     print("done")
 
     # -- 导入/定义训练模型 -- #
 
+    # 从数据集划分30%作为验证集
+    train_size = len(images_paths)
+    valid_size = int(train_size * 0.3)
+    valid_ds = train_ds.skip(int(train_size * 0.7)).take(valid_size)
+    valid_ds = valid_ds.batch(BATCH_SIZE)
+
     print("--> preparing training model(MobileNetV2)...")
     # 打乱数据集
-    image_count = len(images_paths)
-    train_ds = train_ds.shuffle(buffer_size=image_count)
+    train_ds = train_ds.shuffle(buffer_size=train_size)
     # 让数据集重复多次
     train_ds = train_ds.repeat()
     # 设置每个batch的大小
@@ -123,16 +161,11 @@ def training():
 
     # 获取定义后的迁移模型进行训练
     model = get_model(mobile_net, labels_data)
-    train_res = model.fit(train_ds,
-                          epochs=3,
-                          steps_per_epoch=25,
-                          )
-
-    # test
-
+    train_res = model.fit(train_ds, epochs=250, steps_per_epoch=25,
+                          validation_data=valid_ds, validation_steps=25)
     # 保存模型
     print("--> saving output model...")
     model.save("model_output.h5")
 
-
-    return train_res
+    # 绘制loss/accuracy曲线图
+    plot_train_res(train_res)
