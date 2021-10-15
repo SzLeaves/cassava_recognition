@@ -52,7 +52,6 @@ def get_model(mobile_net, labels_data):
         mobile_net,
         tf.keras.layers.GlobalAveragePooling2D(),
         tf.keras.layers.Dense(len(labels_data), activation='softmax')
-
     ])
 
     model.compile(optimizer=tf.keras.optimizers.Adam(),
@@ -93,6 +92,8 @@ def plot_train_res(history):
     plt.xlabel('epoch')
     plt.ylabel('Cross Entropy')
 
+    # 保存图片并显示
+    plt.savefig("acc_loss.png")
     plt.show()
 
 
