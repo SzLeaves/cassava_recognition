@@ -5,6 +5,8 @@ train_img_handle/
 __pycache__/
 
 *.h5
+*.png
+*.jpg
 test.py
 
 !.gitignore
