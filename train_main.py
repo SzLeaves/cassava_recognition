@@ -13,6 +13,7 @@ from modules import model
 from modules import noise_handle
 
 if __name__ == "__main__":
+
     # -- 导入原始图片数据路径 -- #
     images_path = [str(path) for path in list(pathlib.Path("train_img").glob("*.jpg"))]
 
@@ -124,6 +125,7 @@ if __name__ == "__main__":
 
     print('done', end=' -- ')
     print(f'time: {time.time() - t:.2f}s')
+
 
     # -- 模型训练 -- #
     model.training()

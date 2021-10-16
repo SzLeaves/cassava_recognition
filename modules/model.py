@@ -139,8 +139,7 @@ def training():
 
     # 从数据集划分30%作为验证集
     train_size = len(images_paths)
-    valid_size = int(train_size * 0.3)
-    valid_ds = train_ds.skip(int(train_size * 0.7)).take(valid_size)
+    valid_ds = train_ds.skip(int(train_size * 0.7))
     valid_ds = valid_ds.batch(BATCH_SIZE)
 
     print("--> preparing training model(MobileNetV2)...")
@@ -165,8 +164,9 @@ def training():
     train_res = model.fit(train_ds, epochs=250, steps_per_epoch=25,
                           validation_data=valid_ds, validation_steps=25)
     # 保存模型
-    print("--> saving output model...")
+    print("--> saving output model...\n")
     model.save("model_output.h5")
 
     # 绘制loss/accuracy曲线图
+    print("--> draw loss/accuracy image...")
     plot_train_res(train_res)
