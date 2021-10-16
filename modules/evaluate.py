@@ -41,6 +41,7 @@ def predict_data(save_model):
     test_ds, images_ds, images_paths = load_data()
 
     # 评估模型
+    model.summary()
     model.evaluate(test_ds)
 
     # 预测数据
@@ -54,3 +55,8 @@ def predict_data(save_model):
         print('')
 
         predict_text.append("%s,%s,%s" % (name[28:], str(probability), str(ids)))
+
+    # 将预测数据写入文件
+    with open("data_file/predict_data.log", "w") as file:
+        for text in predict_text:
+            file.write(text + '\n')
