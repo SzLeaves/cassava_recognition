@@ -66,6 +66,7 @@ def get_model(mobile_net, labels_data):
 
 # 绘制训练集与测试集的loss/accuary
 def plot_train_res(history):
+    # 读取回测数据
     acc = history.history['accuracy']
     val_acc = history.history['val_accuracy']
 
@@ -73,13 +74,14 @@ def plot_train_res(history):
     val_loss = history.history['val_loss']
 
     plt.figure(figsize=(8, 8))
-    plt.subplot(2, 1, 1)
 
     # 绘制准确率曲线
+    plt.subplot(2, 1, 1)
     plt.title('Training and Validation Accuracy')
     plt.plot(acc, label='Training Accuracy')
     plt.plot(val_acc, label='Validation Accuracy')
     plt.legend(loc='lower right')
+    plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
 
     # 绘制损失率曲线
@@ -87,18 +89,16 @@ def plot_train_res(history):
     plt.subplot(2, 1, 2)
     plt.plot(loss, label='Training Loss')
     plt.plot(val_loss, label='Validation Loss')
-
     plt.legend(loc='upper right')
-    plt.xlabel('epoch')
-    plt.ylabel('Cross Entropy')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
 
-    # 保存图片并显示
+    # 保存图片
     plt.savefig("acc_loss.png")
-    plt.show()
 
 
 def training():
-    print("--> tensorflow version " + tf.__version__)
+    print("tensorflow version " + tf.__version__)
 
     # -- 读取已预分类的数据位置 -- #
 
@@ -161,7 +161,7 @@ def training():
 
     # 获取定义后的迁移模型进行训练
     model = get_model(mobile_net, labels_data)
-    train_res = model.fit(train_ds, epochs=250, steps_per_epoch=25,
+    train_res = model.fit(train_ds, epochs=550, steps_per_epoch=25,
                           validation_data=valid_ds, validation_steps=25)
     # 保存模型
     print("--> saving output model...\n")
