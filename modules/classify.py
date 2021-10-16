@@ -9,7 +9,7 @@ import pathlib
 import shutil
 
 
-def images_classify(save_images, save_label, save_table):
+def images_classify(save_images, save_label, save_table, new_folder):
     # 加载图像路径
     images_path = [str(path) for path in list(pathlib.Path(save_images).glob("*.jpg"))]
     images_path = sorted(images_path)  # 排序后一一对应
@@ -28,7 +28,6 @@ def images_classify(save_images, save_label, save_table):
             images_label[index[0]] = index[1]
 
     # 创建分类文件夹
-    new_folder = "train_img_handle/4.classify/"
     new_folder_path = dict()
     pathlib.Path(new_folder).mkdir(parents=True, exist_ok=True)
     for ids, name in label_index.items():

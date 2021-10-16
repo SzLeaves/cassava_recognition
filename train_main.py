@@ -9,6 +9,7 @@ import shutil
 import time
 
 from modules import classify
+from modules import evaluate
 from modules import model
 from modules import noise_handle
 
@@ -122,18 +123,30 @@ if __name__ == "__main__":
     # 对预处理好的图片分类
     classify.images_classify("train_img_handle/3.leaves_recognition/leaves/",
                              "data_file/label_num_to_disease_map.json",
-                             "data_file/train_clear.csv")
+                             "data_file/train_clear.csv",
+                             "train_img_handle/4.classify/")
 
     print('done', end=' -- ')
     print(f'time: {time.time() - t:.2f}s')
 
     # -- 模型训练 -- #
 
-    print("--> start training model...", end='')
+    print("--> training model...", end='')
     t = time.time()
 
     model.training()
 
     print('\ndone', end=' -- ')
     print(f'time: {time.time() - t:.2f}s')
+
+    # -- 利用已训练模型进行数据预测 -- #
+
+    print("--> predict data...", end='')
+    t = time.time()
+
+    evaluate.predict_data("model_output.h5")
+
+    print('\ndone', end=' -- ')
+    print(f'time: {time.time() - t:.2f}s')
+
     print('-- END --')
