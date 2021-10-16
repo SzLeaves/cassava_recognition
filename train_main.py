@@ -11,7 +11,7 @@ import time
 from modules import classify
 from modules import evaluate
 from modules import model
-from modules import noise_handle
+from modules import processing
 
 if __name__ == "__main__":
     print("-- START --")
@@ -27,7 +27,7 @@ if __name__ == "__main__":
     re_path = "train_img_handle/1.images_resize/"
     pathlib.Path(re_path).mkdir(parents=True, exist_ok=True)
     for index in images_path:
-        noise_handle.resize_images(index, re_path)
+        processing.resize_images(index, re_path)
 
     print('done', end=' -- ')
     print(f'time: {time.time() - t:.2f}s')
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     al_th_upper = 125
 
     for save_image in images_path:
-        res = noise_handle.lapulase(save_image)
+        res = processing.lapulase(save_image)
         if cas_th_lower < res < cas_th_upper or al_th_lower < res < al_th_upper:
 
             shutil.copy(save_image, new_folder_clear)
@@ -83,7 +83,7 @@ if __name__ == "__main__":
     clear_images_path = [str(path) for path in pathlib.Path(new_folder_clear).glob("*.jpg")]
     for handle_images in clear_images_path:
         # 通过识别图片主体色调判断是否为叶片
-        if noise_handle.green_filter(handle_images):
+        if processing.green_filter(handle_images):
             shutil.copy(handle_images, new_folder_leaves)
         else:
             shutil.copy(handle_images, new_folder_other)
