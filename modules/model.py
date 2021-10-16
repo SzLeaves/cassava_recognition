@@ -77,7 +77,7 @@ def plot_train_res(history):
 
     # 绘制准确率曲线
     plt.subplot(2, 1, 1)
-    plt.title('Training and Validation Accuracy')
+    plt.title('Training and Validation Loss/Accuracy')
     plt.plot(acc, label='Training Accuracy')
     plt.plot(val_acc, label='Validation Accuracy')
     plt.legend(loc='lower right')
@@ -85,7 +85,6 @@ def plot_train_res(history):
     plt.ylabel('Accuracy')
 
     # 绘制损失率曲线
-    plt.title('Training and Validation Loss')
     plt.subplot(2, 1, 2)
     plt.plot(loss, label='Training Loss')
     plt.plot(val_loss, label='Validation Loss')
